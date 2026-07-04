@@ -23,14 +23,9 @@ const PcmDpcm: React.FC = () => {
     const pcmLevels = Math.pow(2, pcmBits);
     const pcmStep = (2 * amplitude) / pcmLevels;
 
-    // DPCM Error Range: DPCM assumes differences are smaller. 
-    // Let's assume we optimize the quantizer for a range of [-amplitude, amplitude] for simplicity,
-    // or slightly less if we assume high correlation. To be fair in this demo, we'll use the same full range 
-    // to show how DPCM can look worse if bits are low, or we can restrict range to show "slope overload" equivalent 
-    // if difference is too big. Let's use a range of [-1.5*A, 1.5*A] typically for error? 
-    // Actually, standard DPCM quantizer range is usually determined by signal statistics.
-    // For this educational tool, we'll set the error quantization range to [-amplitude, amplitude].
-    const dpcmErrorRange = amplitude * 1.5; 
+    // DPCM Error Range: DPCM quantizes the prediction error, which is typically smaller than the full signal.
+    // Using the full signal range here makes the quantizer too coarse and can produce poor-looking output.
+    const dpcmErrorRange = amplitude;
     const dpcmLevels = Math.pow(2, dpcmBits);
     const dpcmStep = (2 * dpcmErrorRange) / dpcmLevels;
 
